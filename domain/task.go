@@ -1,27 +1,28 @@
 package domain
 
 import (
-	"context"
 	"time"
+
+	"gorm.io/gorm"
 )
 
-const CollectionTask = "tasks"
-
 type Task struct {
-	ID          string    `json:"id"`
+	gorm.Model
 	Title       string    `json:"title"`
-	UserID      string    `json:"user_id"`
-	DueDate     time.Time `json:"due_date"`
-	Description string    `json:"description"`
-	Status      string    `json:"status"`
+	Tag         string    `json:"tag"`
+	Description string    `json:"description,omitempty"`
+	Status      string    `json:"done"`
+	StartTime   time.Time `json:"start_time"`
+	Deadline    time.Time `json:"deadline"`
+	Priority    int       `json:"priority"`
 }
 
 type TaskRepository interface {
-	Create(c context.Context, task *Task) error
-	FindByUserID(c context.Context, userID string) ([]Task, error)
-}
-
-type TaskUsecase interface {
-	Create(c context.Context, task *Task) error
-	FindByUserID(c context.Context, userID string) ([]Task, error)
+	Create(t Task) (*Task, error)
+	Fetch() ([]Task, error)
+	FetchByID(id uint) (*Task, error)
+	FetchByTag(tag string) ([]Task, error)
+	FetchByDeadline(deadline time.Time) ([]Task, error)
+	FetchByPriority(priority int) ([]Task, error)
+	FetchByStatus(status string) ([]Task, error)
 }
