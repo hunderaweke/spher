@@ -22,13 +22,13 @@ jobs:
         go-version: '1.23' 
 
     - name: Change directory to specific folder
-      working-directory: path/to/your-directory
+      working-directory: . 
       run: echo "Switched to specific directory"
 
     - name: Install dependencies
-      working-directory: path/to/your-directory
+      working-directory: . 
       run: go mod tidy
 
     - name: Run tests
-      working-directory: path/to/your-directory
+      working-directory: .
       run: go test ./...
