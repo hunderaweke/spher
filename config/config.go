@@ -6,6 +6,7 @@ type Database struct {
 	Url      string `mapstructure:"url"`
 	Username string `mapstructure:"username"`
 	Password string `mapstructure:"password"`
+	Name     string `mapstructure:"name"`
 }
 
 type Server struct {

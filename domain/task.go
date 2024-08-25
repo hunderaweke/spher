@@ -26,22 +26,12 @@ type Task struct {
 type (
 	TaskRepository interface {
 		Create(t Task) (*Task, error)
-		Fetch() ([]Task, error)
-		FetchByID(id uint) (*Task, error)
-		FetchByTags(tags []string) ([]Task, error)
-		FetchByDeadline(deadline time.Time) ([]Task, error)
-		FetchByStartTime(startTime time.Time) ([]Task, error)
-		FetchByPriority(priority int) ([]Task, error)
-		FetchByStatus(status string) ([]Task, error)
+		Fetch(filterOptions map[string]interface{}) ([]Task, error)
+		FetchByID(id string) (*Task, error)
 	}
 	TaskUsecase interface {
 		Create(t Task) (*Task, error)
-		Fetch() ([]Task, error)
-		FetchByID(id uint) (*Task, error)
-		FetchByTags(tags []string) ([]Task, error)
-		FetchByDeadline(deadline time.Time) ([]Task, error)
-		FetchByStartTime(startTime time.Time) ([]Task, error)
-		FetchByPriority(priority int) ([]Task, error)
-		FetchByStatus(status string) ([]Task, error)
+		Fetch(filterOptions map[string]interface{}) ([]Task, error)
+		FetchByID(id string) (*Task, error)
 	}
 )

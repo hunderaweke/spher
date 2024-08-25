@@ -11,10 +11,10 @@ type taskRepository struct {
 	db *gorm.DB
 }
 
-func NewTaskRepository(db *gorm.DB) domain.TaskRepository {
+/* func NewTaskRepository(db *gorm.DB) domain.TaskRepository {
 	db.AutoMigrate(&domain.Task{})
 	return &taskRepository{db: db}
-}
+} */
 
 func (t *taskRepository) Create(task domain.Task) (*domain.Task, error) {
 	result := t.db.Create(&task)
@@ -30,7 +30,7 @@ func (t *taskRepository) Fetch() ([]domain.Task, error) {
 	return tasks, result.Error
 }
 
-func (t *taskRepository) FetchByID(id uint) (*domain.Task, error) {
+func (t *taskRepository) FetchByID(id string) (*domain.Task, error) {
 	task := domain.Task{}
 	result := t.db.Find(&task, "id = ?", id)
 	return &task, result.Error
