@@ -20,7 +20,7 @@ func NewTaskRepository(ctx context.Context, collection mongoifc.Collection) doma
 }
 
 func (repo *taskRepository) Create(t domain.Task) (*domain.Task, error) {
-	t.ID = primitive.NewObjectID()
+	t.ID = primitive.NewObjectID().String()
 	if t.StartTime.IsZero() {
 		t.StartTime = time.Now()
 	}

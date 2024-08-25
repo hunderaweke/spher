@@ -2,8 +2,6 @@ package domain
 
 import (
 	"time"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 const (
@@ -14,14 +12,14 @@ const (
 )
 
 type Task struct {
-	ID          primitive.ObjectID `bson:"_id" json:"id"`
-	Title       string             `json:"title"`
-	Tags        []string           `json:"tags"`
-	Description string             `json:"description,omitempty"`
-	Status      string             `json:"status"`
-	StartTime   time.Time          `bson:"start_time" json:"start_time"`
-	Deadline    time.Time          `json:"deadline"`
-	Priority    int                `json:"priority"`
+	ID          string    `bson:"_id" json:"id"`
+	Title       string    `json:"title"`
+	Tags        []string  `json:"tags"`
+	Description string    `json:"description,omitempty"`
+	Status      string    `json:"status"`
+	StartTime   time.Time `bson:"start_time" json:"start_time"`
+	Deadline    time.Time `json:"deadline"`
+	Priority    int       `json:"priority"`
 }
 type (
 	TaskRepository interface {
