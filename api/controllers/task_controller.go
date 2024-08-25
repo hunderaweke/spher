@@ -80,3 +80,36 @@ func (c *TaskController) FetchTaskByID(w http.ResponseWriter, r *http.Request) {
 	}
 	utils.PostJSON(w, task, http.StatusOK)
 }
+
+func (c *TaskController) UpdateTask(w http.ResponseWriter, r *http.Request) {
+	taskID := chi.URLParam(r, "taskID")
+	if !primitive.IsValidObjectID(taskID) {
+		utils.PostJSON(w, map[string]string{"message": "invalid object ID"}, http.StatusNotAcceptable)
+		return
+	}
+	updateData, err := utils.Decode[domain.Task](r.Body)
+	if err != nil {
+		utils.PostJSON(w, map[string]string{"error": "unacceptable data"}, http.StatusNotAcceptable)
+		return
+	}
+	task, err := c.taskUsecase.Update(taskID, updateData)
+	if err != nil {
+		utils.PostJSON(w, map[string]string{"message": err.Error()}, http.StatusInternalServerError)
+		return
+	}
+	utils.PostJSON(w, task, http.StatusOK)
+}
+
+func (c *TaskController) DeleteTask(w http.ResponseWriter, r *http.Request) {
+	taskID := chi.URLParam(r, "taskID")
+	if !primitive.IsValidObjectID(taskID) {
+		utils.PostJSON(w, map[string]string{"message": "invalid object ID"}, http.StatusNotAcceptable)
+		return
+	}
+	err := c.taskUsecase.Delete(taskID)
+	if err != nil {
+		utils.PostJSON(w, map[string]string{"error": err.Error()}, http.StatusNotAcceptable)
+		return
+	}
+	utils.PostJSON(w, "", http.StatusNoContent)
+}

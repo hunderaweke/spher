@@ -24,7 +24,9 @@ func addTaskRoutes(r chi.Router, collection mongoifc.Collection) {
 	{
 		taskRouter.Post("/", c.CreateTask)
 		taskRouter.Get("/", c.FetchTasks)
+		taskRouter.Put("/{taskID}", c.UpdateTask)
 		taskRouter.Get("/{taskID}", c.FetchTaskByID)
+		taskRouter.Delete("/{taskID}", c.DeleteTask)
 	}
 	r.Mount("/tasks", taskRouter)
 }

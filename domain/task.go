@@ -28,10 +28,14 @@ type (
 		Create(t Task) (*Task, error)
 		Fetch(filterOptions map[string]interface{}) ([]Task, error)
 		FetchByID(id string) (*Task, error)
+		Update(taskID string, data Task) (Task, error)
+		Delete(taskID string) error
 	}
 	TaskUsecase interface {
 		Create(t Task) (*Task, error)
 		Fetch(filterOptions map[string]interface{}) ([]Task, error)
 		FetchByID(id string) (*Task, error)
+		Update(taskID string, data Task) (Task, error)
+		Delete(taskID string) error
 	}
 )

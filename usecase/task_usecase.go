@@ -23,3 +23,11 @@ func (usecase *taskUsecase) Fetch(filterOptions map[string]interface{}) ([]domai
 func (usecase *taskUsecase) FetchByID(id string) (*domain.Task, error) {
 	return usecase.taskRepository.FetchByID(id)
 }
+
+func (usecase *taskUsecase) Update(taskID string, data domain.Task) (domain.Task, error) {
+	return usecase.taskRepository.Update(taskID, data)
+}
+
+func (usecase *taskUsecase) Delete(taskID string) error {
+	return usecase.taskRepository.Delete(taskID)
+}
