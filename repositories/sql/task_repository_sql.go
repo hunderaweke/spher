@@ -36,22 +36,36 @@ func (t *taskRepository) FetchByID(id uint) (*domain.Task, error) {
 	return &task, result.Error
 }
 
-func (t *taskRepository) FetchByTag(tag string) ([]domain.Task, error) {
-	task := []domain.Task{}
-	result := t.db.Find(&task, "tag= ?", tag)
-	return task, result.Error
+func (t *taskRepository) FetchByTags(tags []string) ([]domain.Task, error) {
+	tasks := []domain.Task{}
+	err := t.db.Preload("tags").Joins("JOIN task_tags ON task_task.task_id = tasks.id").
+		Joins("JOIN tags ON tags.id = task_tags.tag_id").
+		Where("tags.name IN ?", tags).
+		Group("tasks.id").
+		Having("COUNT(tags.id)=?", len(tags)).
+		Find(&tasks)
+	if err != nil {
+		return []domain.Task{}, err.Error
+	}
+	return tasks, nil
 }
 
 func (t *taskRepository) FetchByDeadline(deadline time.Time) ([]domain.Task, error) {
-	task := []domain.Task{}
-	result := t.db.Find(&task, "deadline = ?", deadline)
-	return task, result.Error
+	tasks := []domain.Task{}
+	result := t.db.Where(&tasks, "DATE(deadline) = ?", deadline.Format("2006-01-02")).Find(&tasks)
+	return tasks, result.Error
+}
+
+func (t *taskRepository) FetchByStartTime(deadline time.Time) ([]domain.Task, error) {
+	tasks := []domain.Task{}
+	result := t.db.Where(&tasks, "DATE(deadline) = ?", deadline.Format("2006-01-02")).Find(&tasks)
+	return tasks, result.Error
 }
 
 func (t *taskRepository) FetchByPriority(priority int) ([]domain.Task, error) {
-	task := []domain.Task{}
-	result := t.db.Find(&task, "priority = ?", priority)
-	return task, result.Error
+	tasks := []domain.Task{}
+	result := t.db.Find(&tasks, "priority = ?", priority)
+	return tasks, result.Error
 }
 
 func (t *taskRepository) FetchByStatus(status string) ([]domain.Task, error) {
