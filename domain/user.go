@@ -1,11 +1,13 @@
 package domain
 
+const UserCollection = "users"
+
 type User struct {
 	ID       string `bson:"_id" json:"id"`
-	Username string `json:"username"`
+	Username string `json:"username" binding:"required"`
 	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Password string `json:"-"`
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
 	Role     string `json:"role"`
 }
 type UserRepository interface {

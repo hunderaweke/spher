@@ -1,4 +1,4 @@
-package infrastructres
+package infrastructures
 
 import (
 	"bytes"

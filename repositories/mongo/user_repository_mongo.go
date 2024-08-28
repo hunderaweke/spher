@@ -14,8 +14,12 @@ type userRepository struct {
 	ctx        context.Context
 }
 
+func NewMongoUserRepository(db mongoifc.Database, ctx context.Context) domain.UserRepository {
+	return &userRepository{collection: db.Collection(domain.UserCollection), ctx: ctx}
+}
+
 func (repo *userRepository) Create(user *domain.User) (domain.User, error) {
-	user.ID = primitive.NewObjectID().String()
+	user.ID = primitive.NewObjectID().Hex()
 	_, err := repo.collection.InsertOne(repo.ctx, user)
 	if err != nil {
 		return domain.User{}, err
@@ -63,7 +67,7 @@ func (repo *userRepository) FetchByUsername(username string) (domain.User, error
 	return u, err
 }
 
-func (repo *userRepository) Fetch(c context.Context) ([]domain.User, error) {
+func (repo *userRepository) Fetch() ([]domain.User, error) {
 	resp, err := repo.collection.Find(repo.ctx, bson.M{})
 	if err != nil {
 		return []domain.User{}, err

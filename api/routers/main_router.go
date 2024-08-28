@@ -36,5 +36,6 @@ func setupRouters(config config.Config) (chi.Router, error) {
 	database := client.Database(config.Database.Name)
 	taskCollection := database.Collection(domain.TaskCollection)
 	addTaskRoutes(router, mongoifc.WrapCollection(taskCollection))
+	addUserRouters(router, mongoifc.WrapDatabase(database))
 	return router, nil
 }

@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -66,7 +65,6 @@ func (c *TaskController) FetchTasks(w http.ResponseWriter, r *http.Request) {
 	if l != "" && p != "" {
 		page, _ := strconv.Atoi(p)
 		limit, _ := strconv.Atoi(p)
-		fmt.Println(p, l)
 		tasks, err := c.taskUsecase.Fetch(filterOptions, page, limit)
 		if err != nil {
 			utils.PostJSON(w, map[string]string{"message": err.Error()}, http.StatusInternalServerError)
