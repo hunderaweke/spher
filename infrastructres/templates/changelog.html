@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Log</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            background-color: #4A90E2; /* Awesome Blue */
+            color: #ffffff;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .content {
+            padding: 20px;
+            color: #333;
+        }
+
+        .content p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            color: #999;
+        }
+
+        .footer a {
+            color: #4A90E2;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Change Log</h1>
+        </div>
+        <div class="content">
+            <p>Hello {{.Name}},</p>
+            <p>We wanted to let you know about some recent changes:</p>
+            <ul>
+                {{range .Changes}}
+                <li>{{.}}</li>
+                {{end}}
+            </ul>
+            <p>Thank you for staying with Spher. We are constantly improving to serve you better.</p>
+            <p>Best regards,<br>The Spher Team</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2024 Spher. All rights reserved.</p>
+            <p><a href="https://spher.example.com">Visit our website</a></p>
+        </div>
+    </div>
+</body>
+</html>

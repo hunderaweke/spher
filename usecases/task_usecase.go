@@ -1,4 +1,4 @@
-package usecase
+package usecases
 
 import (
 	"github.com/hunderaweke/spher/domain"
@@ -16,8 +16,8 @@ func (usecase *taskUsecase) Create(t domain.Task) (*domain.Task, error) {
 	return usecase.taskRepository.Create(t)
 }
 
-func (usecase *taskUsecase) Fetch(filterOptions map[string]interface{}) ([]domain.Task, error) {
-	return usecase.taskRepository.Fetch(filterOptions)
+func (usecase *taskUsecase) Fetch(filterOptions map[string]interface{}, page, limit int) ([]domain.Task, error) {
+	return usecase.taskRepository.Fetch(filterOptions, page, limit)
 }
 
 func (usecase *taskUsecase) FetchByID(id string) (*domain.Task, error) {

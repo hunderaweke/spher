@@ -7,7 +7,7 @@ import (
 	"github.com/hunderaweke/spher/api/controllers"
 	"github.com/hunderaweke/spher/domain"
 	"github.com/hunderaweke/spher/repositories/mongo"
-	"github.com/hunderaweke/spher/usecase"
+	"github.com/hunderaweke/spher/usecases"
 	"github.com/sv-tools/mongoifc"
 )
 
@@ -18,7 +18,7 @@ func SetupTaskRoutes(r chi.Router, database mongoifc.Database) {
 
 func addTaskRoutes(r chi.Router, collection mongoifc.Collection) {
 	repo := mongo.NewTaskRepository(context.TODO(), collection)
-	u := usecase.NewTaskUsecase(repo)
+	u := usecases.NewTaskUsecase(repo)
 	c := controllers.NewTaskController(u)
 	taskRouter := chi.NewRouter()
 	{

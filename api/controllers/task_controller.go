@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -35,6 +37,8 @@ func (c *TaskController) CreateTask(w http.ResponseWriter, r *http.Request) {
 
 func (c *TaskController) FetchTasks(w http.ResponseWriter, r *http.Request) {
 	filterOptions := make(map[string]interface{})
+	p := r.URL.Query().Get("page")
+	l := r.URL.Query().Get("limit")
 	if tagsQuery := r.URL.Query().Get("tags"); tagsQuery != "" {
 		tags := strings.Split(tagsQuery, ",")
 		filterOptions["tags"] = tags
@@ -59,12 +63,24 @@ func (c *TaskController) FetchTasks(w http.ResponseWriter, r *http.Request) {
 	if status := r.URL.Query().Get("status"); status != "" {
 		filterOptions["status"] = status
 	}
-	tasks, err := c.taskUsecase.Fetch(filterOptions)
-	if err != nil {
-		utils.PostJSON(w, map[string]string{"message": err.Error()}, http.StatusInternalServerError)
-		return
+	if l != "" && p != "" {
+		page, _ := strconv.Atoi(p)
+		limit, _ := strconv.Atoi(p)
+		fmt.Println(p, l)
+		tasks, err := c.taskUsecase.Fetch(filterOptions, page, limit)
+		if err != nil {
+			utils.PostJSON(w, map[string]string{"message": err.Error()}, http.StatusInternalServerError)
+			return
+		}
+		utils.PostJSON(w, tasks, http.StatusOK)
+	} else {
+		tasks, err := c.taskUsecase.Fetch(filterOptions, 0, 0)
+		if err != nil {
+			utils.PostJSON(w, map[string]string{"message": err.Error()}, http.StatusInternalServerError)
+			return
+		}
+		utils.PostJSON(w, tasks, http.StatusOK)
 	}
-	utils.PostJSON(w, tasks, http.StatusOK)
 }
 
 func (c *TaskController) FetchTaskByID(w http.ResponseWriter, r *http.Request) {

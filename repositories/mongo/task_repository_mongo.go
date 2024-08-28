@@ -8,6 +8,7 @@ import (
 	"github.com/sv-tools/mongoifc"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type taskRepository struct {
@@ -20,7 +21,7 @@ func NewTaskRepository(ctx context.Context, collection mongoifc.Collection) doma
 }
 
 func (repo *taskRepository) Create(t domain.Task) (*domain.Task, error) {
-	t.ID = primitive.NewObjectID().String()
+	t.ID = primitive.NewObjectID().Hex()
 	if t.StartTime.IsZero() {
 		t.StartTime = time.Now()
 	}
@@ -40,7 +41,7 @@ func (repo *taskRepository) Create(t domain.Task) (*domain.Task, error) {
 	return &t, nil
 }
 
-func (repo *taskRepository) Fetch(filterOptions map[string]interface{}) ([]domain.Task, error) {
+func (repo *taskRepository) Fetch(filterOptions map[string]interface{}, page, limit int) ([]domain.Task, error) {
 	filter := bson.M{}
 	for key, val := range filterOptions {
 		if key == "start_time" || key == "deadline" {
@@ -56,7 +57,13 @@ func (repo *taskRepository) Fetch(filterOptions map[string]interface{}) ([]domai
 			filter[key] = val
 		}
 	}
-	resp, err := repo.collection.Find(repo.ctx, filter)
+	findOptions := options.Find()
+	if page > 0 && limit > 0 {
+		skip := (page - 1) * limit
+		findOptions.SetSkip(int64(skip))
+		findOptions.SetLimit(int64(limit))
+	}
+	resp, err := repo.collection.Find(repo.ctx, filter, findOptions)
 	if err != nil {
 		return []domain.Task{}, err
 	}

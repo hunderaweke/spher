@@ -24,14 +24,14 @@ type Task struct {
 type (
 	TaskRepository interface {
 		Create(t Task) (*Task, error)
-		Fetch(filterOptions map[string]interface{}) ([]Task, error)
+		Fetch(filterOptions map[string]interface{}, page, limit int) ([]Task, error)
 		FetchByID(id string) (*Task, error)
 		Update(taskID string, data Task) (Task, error)
 		Delete(taskID string) error
 	}
 	TaskUsecase interface {
 		Create(t Task) (*Task, error)
-		Fetch(filterOptions map[string]interface{}) ([]Task, error)
+		Fetch(filterOptions map[string]interface{}, page, limit int) ([]Task, error)
 		FetchByID(id string) (*Task, error)
 		Update(taskID string, data Task) (Task, error)
 		Delete(taskID string) error
